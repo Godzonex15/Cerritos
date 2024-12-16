@@ -1,0 +1,879 @@
+:root {
+    --primary: #006E6D;
+    --primary-dark: #004A4A;
+    --secondary: #C2A663;
+    --white: #FFFFFF;
+    --cream: #FAF5EF;
+    --gray-light: #F5F5F5;
+    --gray-dark: #333333;
+    --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-fast: 0.3s ease;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--white);
+    color: var(--gray-dark);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+.featured-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding: 2rem;
+}
+
+.featured-subtitle {
+    color: var(--primary);
+    letter-spacing: 0.2em;
+    font-size: 0.875rem;
+    margin-bottom: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+.featured-title {
+    color: var(--primary-dark);
+    font-size: 3.5rem;
+    font-family: 'Playfair Display', serif;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+}
+
+/* Carousel Container */
+.carousel-container {
+    position: relative;
+    max-width: 1400px;
+    margin: 0 auto 8rem auto;
+    overflow: hidden;
+    padding: 0 4rem;
+}
+
+.carousel-track {
+    display: flex;
+    gap: 2rem;
+    transition: all 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
+    will-change: transform;
+    width: fit-content;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+/* Property Cards */
+.property-card {
+    flex: 0 0 calc(33.333% - 2rem);
+    width: calc(33.333% - 2rem);
+    min-width: calc(33.333% - 2rem);
+    height: 450px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease;
+}
+
+.property-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.property-card:hover .property-image {
+    transform: scale(1.05);
+}
+
+.property-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.9) 0%,
+        rgba(0, 0, 0, 0.5) 50%,
+        transparent 100%
+    );
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+.property-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 2rem;
+    color: var(--white);
+    z-index: 2;
+}
+
+.property-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--secondary);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.property-location {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    opacity: 0.9;
+    font-weight: 300;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.property-price {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: var(--secondary);
+    margin-bottom: 1rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.property-details-btn {
+    padding: 0.75rem 1.5rem;
+    background: transparent;
+    border: 1px solid var(--secondary);
+    color: var(--secondary);
+    font-size: 0.875rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 400;
+}
+
+.property-details-btn:hover {
+    background: var(--secondary);
+    color: var(--white);
+    transform: translateY(-2px);
+}
+
+/* Carousel Navigation */
+.carousel-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3rem;
+    height: 3rem;
+    background: rgba(0, 0, 0, 0.5);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.carousel-button:hover {
+    background: var(--primary);
+}
+
+.carousel-button svg {
+    width: 1.5rem;
+    height: 1.5rem;
+    color: var(--white);
+}
+
+.carousel-button.prev {
+    left: 1rem;
+}
+
+.carousel-button.next {
+    right: 1rem;
+}
+
+.carousel-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity var(--transition-fast);
+}
+
+.modal.show {
+    display: block;
+    opacity: 1;
+}
+
+.modal-content {
+    position: relative;
+    width: 95%;
+    max-width: 1400px;
+    margin: 1rem auto;
+    background: var(--white);
+    border-radius: 0;
+    overflow: hidden;
+    transform: translateY(-50px);
+    opacity: 0;
+    transition: all var(--transition-slow);
+}
+
+.modal.show .modal-content {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.close-modal {
+    position: absolute;
+    right: 1.5rem;
+    top: 1.5rem;
+    font-size: 2rem;
+    color: var(--secondary);
+    cursor: pointer;
+    z-index: 10;
+    transition: transform var(--transition-fast);
+}
+
+.close-modal:hover {
+    transform: rotate(90deg);
+}
+
+.modal-body {
+    display: grid;
+    grid-template-columns: 40% 60%;
+    gap: 0;
+    max-height: 85vh;
+}
+
+.modal-gallery {
+    padding: 2rem;
+    background: var(--gray-light);
+}
+
+/* Estilos para el primer modal */
+.modal-nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 2.5rem;
+    height: 2.5rem;
+    background: var(--secondary);
+    border: none;
+    border-radius: 50%;
+    color: var(--white);
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 10;
+    opacity: 0.8;
+}
+
+.modal-nav-btn:hover {
+    opacity: 1;
+    background: var(--primary-dark);
+}
+
+.modal-nav-btn.prev {
+    left: 1rem;
+}
+
+.modal-nav-btn.next {
+    right: 1rem;
+}
+
+.main-image-container {
+    position: relative;
+    height: 400px;
+    overflow: hidden;
+    background: var(--gray-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#modalMainImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.thumbnail-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 0.5rem;
+    margin-top: 1rem;
+    height: 80px;
+    overflow-y: auto;
+}
+
+.thumbnail {
+    height: 60px;
+    width: 100%;
+    object-fit: cover;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    border: 2px solid transparent;
+}
+
+.thumbnail:hover {
+    opacity: 0.8;
+}
+
+.thumbnail.active {
+    border-color: var(--secondary);
+}
+
+.property-details {
+    padding: 2rem;
+    overflow-y: auto;
+    max-height: 85vh;
+}
+
+.property-header {
+    margin-bottom: 2rem;
+}
+
+.property-header h2 {
+    font-family: 'Playfair Display', serif;
+    color: var(--primary-dark);
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.modal-price {
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--secondary);
+    margin: 1rem 0;
+    font-family: 'Playfair Display', serif;
+}
+
+/* Gallery preview in modal */
+.gallery-preview {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.gallery-preview img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+}
+
+.gallery-preview img:hover {
+    opacity: 0.8;
+}
+
+.view-all-photos {
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+    height: 150px;
+    background: var(--primary-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    transition: all 0.3s ease;
+}
+
+.view-all-photos:hover {
+    background: var(--secondary);
+}
+
+.view-all-photos span {
+    font-size: 1.125rem;
+    font-weight: 500;
+    z-index: 2;
+}
+
+/* Resto de estilos del modal principal */
+.data-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin: 1.5rem 0;
+}
+
+.data-item {
+    padding: 1rem;
+    background: var(--gray-light);
+    border-radius: 4px;
+    text-align: center;
+}
+
+.data-label {
+    font-size: 0.875rem;
+    color: var(--gray-dark);
+    margin-bottom: 0.25rem;
+}
+
+.data-value {
+    font-size: 1.125rem;
+    font-weight: 500;
+    color: var(--primary-dark);
+}
+
+.details-section {
+    margin-bottom: 2rem;
+}
+
+.details-section h3 {
+    color: var(--primary-dark);
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid var(--secondary);
+    padding-bottom: 0.5rem;
+}
+
+.property-details-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.property-details-table th,
+.property-details-table td {
+    padding: 0.75rem;
+    border-bottom: 1px solid var(--gray-light);
+    text-align: left;
+}
+
+.property-details-table th {
+    color: var(--primary-dark);
+    font-weight: 500;
+    width: 40%;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.feature-category {
+    background: var(--gray-light);
+    padding: 1rem;
+    border-radius: 4px;
+}
+
+.feature-category h4 {
+    color: var(--primary-dark);
+    margin-bottom: 0.5rem;
+}
+
+/* Gallery Modal Styles */
+.gallery-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 2000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.gallery-modal.show {
+    display: block;
+    opacity: 1;
+}
+
+.gallery-content {
+    width: 100%;
+    height: 100%;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.gallery-main {
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 2rem 0;
+}
+
+.gallery-main img {
+    max-height: 70vh;
+    width: auto;
+    max-width: 90%;
+    object-fit: contain;
+}
+
+.gallery-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3.5rem;
+    height: 3.5rem;
+    background: var(--secondary);
+    border: none;
+    border-radius: 50%;
+    color: var(--white);
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.gallery-nav:hover {
+    background: var(--primary-dark);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.gallery-nav.prev {
+    left: 2rem;
+}
+
+.gallery-nav.next {
+    right: 2rem;
+}
+
+.gallery-thumbs {
+    height: 120px;
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    padding: 1rem;
+    margin: 0 auto;
+    max-width: 90%;
+    scrollbar-width: thin;
+    scrollbar-color: var(--secondary) rgba(255,255,255,0.1);
+}
+
+.gallery-thumbs::-webkit-scrollbar {
+    height: 6px;
+}
+
+.gallery-thumbs::-webkit-scrollbar-track {
+    background: rgba(255,255,255,0.1);
+    border-radius: 3px;
+}
+
+.gallery-thumbs::-webkit-scrollbar-thumb {
+    background-color: var(--secondary);
+    border-radius: 3px;
+}
+
+.gallery-thumb {
+    height: 100px;
+    width: 150px;
+    flex: 0 0 150px;
+    object-fit: cover;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    border-radius: 4px;
+}
+
+.gallery-thumb:hover {
+    opacity: 0.8;
+}
+
+.gallery-thumb.active {
+    opacity: 1;
+    border-color: var(--secondary);
+}
+
+.gallery-counter {
+    position: absolute;
+    top: 2rem;
+    left: 2rem;
+    color: var(--white);
+    font-size: 1.125rem;
+    background: var(--secondary);
+    padding: 0.5rem 1.5rem;
+    border-radius: 2rem;
+    font-weight: 500;
+}
+
+.gallery-close {
+    position: absolute;
+    right: 2rem;
+    top: 2rem;
+    width: 3.5rem;
+    height: 3.5rem;
+    background: var(--secondary);
+    border: none;
+    border-radius: 50%;
+    color: var(--white);
+    font-size: 1.75rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 100;
+}
+
+.gallery-close:hover {
+    background: var(--primary-dark);
+    transform: rotate(90deg);
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .modal-body {
+        grid-template-columns: 1fr;
+    }
+    
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 1024px) {
+    .property-card {
+        flex: 0 0 calc(50% - 1rem);
+        width: calc(50% - 1rem);
+        min-width: calc(50% - 1rem);
+        height: 400px;
+    }
+    
+    .featured-title {
+        font-size: 3rem;
+    }
+    
+    .data-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .property-card {
+        flex: 0 0 100%;
+        width: 100%;
+        min-width: 100%;
+        height: 350px;
+    }
+    
+    .featured-title {
+        font-size: 2rem;
+    }
+    
+    .carousel-container {
+        padding: 0 1rem;
+    }
+    
+    .data-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .modal-content {
+        width: 100%;
+        margin: 0;
+        height: 100vh;
+    }
+    
+    .modal-body {
+        max-height: 100vh;
+    }
+
+    .gallery-nav {
+        width: 3rem;
+        height: 3rem;
+        font-size: 1.25rem;
+    }
+    
+    .gallery-nav.prev {
+        left: 1rem;
+    }
+    
+    .gallery-nav.next {
+        right: 1rem;
+    }
+    
+    .gallery-thumbs {
+        height: 100px;
+        padding: 0.5rem;
+    }
+    
+    .gallery-thumb {
+        height: 80px;
+        width: 120px;
+        flex: 0 0 120px;
+    }
+    
+    .gallery-counter {
+        top: 1rem;
+        left: 1rem;
+        font-size: 1rem;
+        padding: 0.4rem 1rem;
+    }
+    
+    .gallery-close {
+        right: 1rem;
+        top: 1rem;
+        width: 3rem;
+        height: 3rem;
+        font-size: 1.5rem;
+    }
+
+    .modal-nav-btn {
+        width: 2rem;
+        height: 2rem;
+        font-size: 0.875rem;
+    }
+}
+
+.virtual-tour {
+    margin: 2rem 0;
+    padding: 2.5rem;
+    background: linear-gradient(to right, var(--cream), var(--white));
+    border: 1px solid var(--secondary);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.virtual-tour h3 {
+    font-family: 'Playfair Display', serif;
+    color: var(--primary-dark);
+    font-size: 1.25rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    margin: 0;
+    border: none;
+    padding: 0;
+}
+
+.virtual-tour a {
+    display: inline-block;
+    padding: 1rem 3rem;
+    border: 1px solid var(--secondary);
+    color: var(--secondary);
+    text-decoration: none;
+    font-size: 0.875rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    background: transparent;
+}
+
+.virtual-tour a:hover {
+    background: var(--secondary);
+    color: var(--white);
+}
+
+@media (max-width: 768px) {
+    .virtual-tour {
+        padding: 2rem;
+    }
+    
+    .virtual-tour a {
+        padding: 0.875rem 2.5rem;
+        width: 100%;
+        text-align: center;
+    }
+}
+
+/* Añadir estos estilos a tu CSS */
+.map-container {
+    width: 100%;
+    height: 300px;
+    overflow: hidden;
+    border: 1px solid var(--secondary);
+    margin-bottom: 1rem;
+}
+
+.location-content {
+    background: var(--white);
+    padding: 1rem 0;
+}
+
+.location-address {
+    font-size: 1rem;
+    color: var(--gray-dark);
+    margin-bottom: 1rem;
+    padding: 0 1rem;
+}
+
+.location-buttons {
+    display: flex;
+    gap: 1rem;
+    padding: 0 1rem;
+}
+
+.view-map-btn {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background: transparent;
+    color: var(--secondary);
+    text-decoration: none;
+    font-size: 0.875rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    border: 1px solid var(--secondary);
+    transition: all 0.3s ease;
+    text-align: center;
+    flex: 1;
+}
+
+.view-map-btn:hover {
+    background: var(--secondary);
+    color: var(--white);
+}
+
+/* Estilos para el marcador personalizado */
+.custom-marker {
+    background: transparent;
+}
+
+.marker-pin {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--secondary);
+    border: 2px solid var(--white);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+.marker-pin::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 8px 6px 0;
+    border-style: solid;
+    border-color: var(--secondary) transparent transparent;
+}
+
+@media (max-width: 768px) {
+    .map-container {
+        height: 250px;
+    }
+
+    .location-buttons {
+        flex-direction: column;
+    }
+}
