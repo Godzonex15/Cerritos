@@ -59,7 +59,7 @@ body {
 .carousel-track {
     display: flex;
     gap: 2rem;
-    transition: all 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
+    transition: transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
     will-change: transform;
     width: fit-content;
     transform: translate3d(0, 0, 0);
@@ -69,9 +69,9 @@ body {
 
 /* Property Cards */
 .property-card {
-    flex: 0 0 calc(33.333% - 2rem);
-    width: calc(33.333% - 2rem);
-    min-width: calc(33.333% - 2rem);
+    flex: 0 0 calc((100% - 4rem) / 3);
+    width: calc((100% - 4rem) / 3);
+    min-width: calc((100% - 4rem) / 3);
     height: 450px;
     position: relative;
     overflow: hidden;
@@ -203,132 +203,51 @@ body {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     background-color: rgba(0, 0, 0, 0.9);
-    z-index: 99999999; /* z-index muy alto para superar cualquier elemento de WordPress */
+    z-index: 1000;
     opacity: 0;
     transition: opacity var(--transition-fast);
-    margin: 0;
-    padding: 0;
-    border: none;
-    overflow-y: auto;
-    position: fixed !important; /* Forzar position fixed */
 }
 
 .modal.show {
-    display: block !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-}
-
-.modal-content {
-    position: absolute;
-    width: 95vw;
-    max-width: 1400px;
-    margin: 2rem auto;
-    left: 50%;
-    transform: translateX(-50%) translateY(-50px);
-    background: var(--white);
-    border-radius: 0;
-    overflow: hidden;
-    opacity: 0;
-    transition: all var(--transition-slow);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-}
-
-.modal.show .modal-content {
-    transform: translateX(-50%) translateY(0);
+    display: block;
     opacity: 1;
 }
 
-.modal-body {
-    max-height: 85vh;
-    overflow-y: auto;
-    display: grid;
-    grid-template-columns: 40% 60%;
+.modal-content {
+    position: relative;
+    width: 95%;
+    max-width: 1400px;
+    margin: 1rem auto;
     background: var(--white);
+    border-radius: 0;
+    overflow: hidden;
+    transform: translateY(-50px);
+    opacity: 0;
+    transition: all var(--transition-slow);
+}
+
+.modal.show .modal-content {
+    transform: translateY(0);
+    opacity: 1;
 }
 
 .close-modal {
-    position: fixed;
-    right: 2rem;
-    top: 2rem;
-    width: 40px;
-    height: 40px;
-    font-size: 2.5rem;
-    color: var(--white);
+    position: absolute;
+    right: 1.5rem;
+    top: 1.5rem;
+    font-size: 2rem;
+    color: var(--secondary);
     cursor: pointer;
-    z-index: 999999999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(0,0,0,0.5);
-    border-radius: 50%;
+    z-index: 10;
     transition: transform var(--transition-fast);
 }
 
 .close-modal:hover {
     transform: rotate(90deg);
-    background: var(--secondary);
 }
-
-/* Asegurar que el modal esté por encima de los elementos de WordPress */
-body.modal-open {
-    overflow: hidden !important;
-}
-
-/* Ajustes para el iframe */
-iframe {
-    max-width: 100%;
-    border: none;
-}
-
-/* Ajustes responsive */
-@media (max-width: 1200px) {
-    .modal-body {
-        grid-template-columns: 1fr;
-    }
-    
-    .modal-content {
-        width: 98vw;
-        margin: 1rem auto;
-    }
-}
-
-@media (max-width: 768px) {
-    .modal-content {
-        width: 100vw;
-        margin: 0;
-        height: 100vh;
-    }
-    
-    .modal-body {
-        max-height: 100vh;
-    }
-    
-    .close-modal {
-        right: 1rem;
-        top: 1rem;
-    }
-}
-
-/* Asegurar que el modal esté por encima de cualquier elemento de WordPress */
-#wpadminbar,
-.elementor-element,
-.elementor-widget,
-.elementor-section {
-    z-index: auto !important;
-}
-
-.modal {
-    position: fixed !important;
-    left: 0 !important;
-    top: 0 !important;
-    right: 0 !important;
-    bottom: 0 !important;
-}
-
 
 .modal-body {
     display: grid;
@@ -732,9 +651,9 @@ iframe {
 
 @media (max-width: 1024px) {
     .property-card {
-        flex: 0 0 calc(50% - 1rem);
-        width: calc(50% - 1rem);
-        min-width: calc(50% - 1rem);
+        flex: 0 0 calc((100% - 4rem) / 3);
+        width: calc((100% - 4rem) / 3);
+        min-width: calc((100% - 4rem) / 3);
         height: 400px;
     }
     
@@ -958,40 +877,3 @@ iframe {
         flex-direction: column;
     }
 }
-
-.wave-footer {
-    position: relative;
-    width: 100%;
-    background-color: #ffffff;
-    margin-top: 4rem;
-}
-
-.wave-divider {
-    position: relative;
-    width: 100%;
-    height: 120px;
-    overflow: hidden;
-}
-
-.wave-divider svg {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: block;
-}
-
-/* Aseguramos que se mantenga responsivo */
-@media (max-width: 768px) {
-    .wave-divider {
-        height: 80px;
-    }
-}
-
-@media (max-width: 480px) {
-    .wave-divider {
-        height: 60px;
-    }
-}
-
