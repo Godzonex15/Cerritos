@@ -105,8 +105,26 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function initializeCarousel() {
+        // Obtener todos los listings
+        let listings = [...window.SAMPLE_LISTINGS];
+        
+        // Asegurarse de que hay al menos 3 elementos
+        while (listings.length < 3) {
+            listings = [...listings, ...window.SAMPLE_LISTINGS];
+        }
+        
+        // Calcular cuántos grupos de 3 necesitamos
+        const itemsPerView = 3;
+        const totalGroups = Math.ceil(listings.length / itemsPerView);
+        const normalizedLength = totalGroups * itemsPerView;
+        
+        // Rellenar con elementos si es necesario para tener múltiplos de 3
+        while (listings.length < normalizedLength) {
+            listings.push(listings[listings.length % window.SAMPLE_LISTINGS.length]);
+        }
+        
         // Mezclar los listings
-        const shuffledListings = shuffleArray(window.SAMPLE_LISTINGS);
+        const shuffledListings = shuffleArray(listings);
         
         // Limpiar el track
         track.innerHTML = '';
@@ -115,20 +133,20 @@ document.addEventListener('DOMContentLoaded', () => {
         shuffledListings.forEach(property => {
             track.insertAdjacentHTML('beforeend', createPropertyCard(property));
         });
-
+    
         // Obtener todas las tarjetas creadas
         const cards = Array.from(track.children);
         
         // Crear clones para el efecto infinito
-        const clonesStart = cloneItems(cards, 1);
-        const clonesEnd = cloneItems(cards, 1);
+        const clonesStart = cloneItems(cards.slice(-itemsPerView), 1);
+        const clonesEnd = cloneItems(cards.slice(0, itemsPerView), 1);
         
         // Añadir clones al principio y final
         clonesEnd.forEach(clone => track.appendChild(clone));
         clonesStart.forEach(clone => track.insertBefore(clone, track.firstChild));
         
         // Ajustar posición inicial
-        currentIndex = cards.length; // Comenzar después de los clones iniciales
+        currentIndex = itemsPerView;
         updateCarousel(false);
         
         attachPropertyCardListeners();
@@ -299,33 +317,28 @@ document.addEventListener('DOMContentLoaded', () => {
         const cards = track.querySelectorAll('.property-card');
         const cardWidth = cards[0].offsetWidth;
         const gap = 32; // 2rem en píxeles
+        const itemsPerView = 3;
         
-        // Calcular el offset
+        // Calcular el offset basado en grupos de 3
         const offset = -(currentIndex * (cardWidth + gap));
         
         // Aplicar la transición solo cuando sea necesario
         track.style.transition = animate ? 'transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1)' : 'none';
         track.style.transform = `translateX(${offset}px)`;
-
-        // Quitar los botones disabled ya que ahora es infinito
-        prevButton.disabled = false;
-        nextButton.disabled = false;
-        prevButton.style.opacity = '1';
-        nextButton.style.opacity = '1';
-
-        // Verificar si necesitamos hacer el salto
+    
+        // Reset cuando llegue a los extremos
         if (animate) {
             const totalCards = track.querySelectorAll('.property-card:not([data-clone="true"])').length;
             
             setTimeout(() => {
-                if (currentIndex >= totalCards * 2) {
-                    currentIndex = totalCards;
+                if (currentIndex >= totalCards) {
+                    currentIndex = itemsPerView;
                     updateCarousel(false);
                 } else if (currentIndex <= 0) {
-                    currentIndex = totalCards;
+                    currentIndex = totalCards - itemsPerView;
                     updateCarousel(false);
                 }
-            }, 800); // Mismo tiempo que la transición
+            }, 800);
         }
     }
 
