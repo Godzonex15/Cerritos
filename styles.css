@@ -59,7 +59,7 @@ body {
 .carousel-track {
     display: flex;
     gap: 2rem;
-    transition: all 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
+    transition: transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
     will-change: transform;
     width: fit-content;
     transform: translate3d(0, 0, 0);
@@ -69,9 +69,9 @@ body {
 
 /* Property Cards */
 .property-card {
-    flex: 0 0 calc(33.333% - 2rem);
-    width: calc(33.333% - 2rem);
-    min-width: calc(33.333% - 2rem);
+    flex: 0 0 calc((100% - 4rem) / 3);
+    width: calc((100% - 4rem) / 3);
+    min-width: calc((100% - 4rem) / 3);
     height: 450px;
     position: relative;
     overflow: hidden;
@@ -651,9 +651,9 @@ body {
 
 @media (max-width: 1024px) {
     .property-card {
-        flex: 0 0 calc(50% - 1rem);
-        width: calc(50% - 1rem);
-        min-width: calc(50% - 1rem);
+        flex: 0 0 calc((100% - 4rem) / 3);
+        width: calc((100% - 4rem) / 3);
+        min-width: calc((100% - 4rem) / 3);
         height: 400px;
     }
     
