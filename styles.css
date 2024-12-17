@@ -59,7 +59,7 @@ body {
 .carousel-track {
     display: flex;
     gap: 2rem;
-    transition: transform 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
+    transition: all 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
     will-change: transform;
     width: fit-content;
     transform: translate3d(0, 0, 0);
@@ -69,9 +69,9 @@ body {
 
 /* Property Cards */
 .property-card {
-    flex: 0 0 calc((100% - 4rem) / 3);
-    width: calc((100% - 4rem) / 3);
-    min-width: calc((100% - 4rem) / 3);
+    flex: 0 0 calc(33.333% - 2rem);
+    width: calc(33.333% - 2rem);
+    min-width: calc(33.333% - 2rem);
     height: 450px;
     position: relative;
     overflow: hidden;
@@ -651,9 +651,9 @@ body {
 
 @media (max-width: 1024px) {
     .property-card {
-        flex: 0 0 calc((100% - 4rem) / 3);
-        width: calc((100% - 4rem) / 3);
-        min-width: calc((100% - 4rem) / 3);
+        flex: 0 0 calc(50% - 1rem);
+        width: calc(50% - 1rem);
+        min-width: calc(50% - 1rem);
         height: 400px;
     }
     
@@ -914,3 +914,33 @@ body {
     }
 }
 
+/* Añadir al final del archivo CSS */
+.iframe-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 999999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--transition-fast), visibility var(--transition-fast);
+}
+
+.iframe-modal.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.iframe-modal .modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 95%;
+    max-width: 1400px;
+    background: var(--white);
+    max-height: 90vh;
+    overflow-y: auto;
+}
